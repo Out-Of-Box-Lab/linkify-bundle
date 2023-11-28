@@ -16,7 +16,7 @@
     },
     "require": {
         "php": "^7.0 || ^8.0",
-        "symfony/framework-bundle": "^5.0* || ^6.0*",
+        "symfony/framework-bundle": "^5.0 || ^6.0",
         "misd/linkify": "^1.0"
     },
     "require-dev": {
