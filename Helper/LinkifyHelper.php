@@ -14,68 +14,32 @@ namespace Misd\LinkifyBundle\Helper;
 use Misd\Linkify\Linkify;
 use Symfony\Component\Templating\Helper\HelperInterface;
 
-/**
- * LinkifyHelper.
- */
 class LinkifyHelper implements HelperInterface
 {
-    /**
-     * Linkify.
-     *
-     * @var Linkify
-     */
-    protected $linkify;
+    protected Linkify $linkify;
+    protected string $charset = 'UTF-8';
 
-    /**
-     * Charset.
-     *
-     * @var string
-     */
-    protected $charset = 'UTF-8';
-
-    /**
-     * Constructor.
-     *
-     * @param Linkify $linkify Linkify
-     */
     public function __construct(Linkify $linkify)
     {
         $this->linkify = $linkify;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setCharset($charset)
+    public function setCharset(string $charset)
     {
         $this->charset = $charset;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getCharset()
+    public function getCharset(): string
     {
         return $this->charset;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'linkify';
     }
 
-    /**
-     * Process text.
-     *
-     * @param string $text    Text to process.
-     * @param array  $options Options.
-     *
-     * @return string Processed text.
-     */
-    public function process($text, array $options = array())
+    public function process(string $text, array $options = []): string
     {
         return $this->linkify->process($text, $options);
     }

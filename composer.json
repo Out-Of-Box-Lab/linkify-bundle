@@ -15,8 +15,9 @@
         "issues": "https://github.com/Out-Of-Box-Lab/linkify-bundle/issues"
     },
     "require": {
-        "php": "^7.0 || ^8.0",
+        "php": "^7.4 || ^8.0",
         "symfony/framework-bundle": "^5.0 || ^6.0",
+        "symfony/templating": "^5.0 || ^6.0",
         "misd/linkify": "^1.0"
     },
     "require-dev": {
@@ -37,7 +38,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.0.1-dev"
+            "dev-master": "1.0.2-dev"
         }
     }
 }
