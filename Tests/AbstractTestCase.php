@@ -12,22 +12,23 @@
 namespace Misd\LinkifyBundle\Tests;
 
 use Misd\LinkifyBundle\MisdLinkifyBundle;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\Compiler\ResolveDefinitionTemplatesPass;
 use Symfony\Component\DependencyInjection\Compiler\ResolveParameterPlaceHoldersPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-class AbstractTestCase extends PHPUnit_Framework_TestCase
+class AbstractTestCase extends KernelTestCase
 {
     protected function getContainer(array $config = array(), KernelInterface $kernel = null)
     {
         if (null === $kernel) {
-            $kernel = $this->getMockBuilder('Symfony\Component\HttpKernel\KernelInterface')->getMock();
+            $kernel = $this->createMock(KernelInterface::class);
             $kernel
                 ->expects($this->any())
                 ->method('getBundles')
-                ->will($this->returnValue(array()));
+                ->willReturn([]);
         }
 
         $bundle = new MisdLinkifyBundle($kernel);
@@ -44,9 +45,9 @@ class AbstractTestCase extends PHPUnit_Framework_TestCase
         $bundle->build($container);
 
         $container->getCompilerPassConfig()->setOptimizationPasses(
-            array(new ResolveParameterPlaceHoldersPass(), new ResolveDefinitionTemplatesPass())
+            [new ResolveParameterPlaceHoldersPass()]
         );
-        $container->getCompilerPassConfig()->setRemovingPasses(array());
+        $container->getCompilerPassConfig()->setRemovingPasses([]);
         $container->compile();
 
         return $container;

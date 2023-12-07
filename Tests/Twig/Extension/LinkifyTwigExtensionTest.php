@@ -11,33 +11,22 @@
 
 namespace Misd\LinkifyBundle\Tests\Twig\Extension;
 
-use Misd\LinkifyBundle\Tests\AbstractTestCase;
+use Misd\LinkifyBundle\Helper\LinkifyHelper;
 use Misd\LinkifyBundle\Twig\Extension\LinkifyTwigExtension;
-use Twig_SimpleFilter;
+use PHPUnit\Framework\TestCase;
+use Twig\TwigFilter;
 
-class LinkifyTwigExtensionTest extends AbstractTestCase
+class LinkifyTwigExtensionTest extends TestCase
 {
-    public function testConstructor()
-    {
-        $linkify = $this->getMockBuilder('Misd\Linkify\Linkify')->getMock();
-        $helper = $this->getMockBuilder('Misd\LinkifyBundle\Helper\LinkifyHelper')->setConstructorArgs(array($linkify))->getMock();
-
-        $extension = new LinkifyTwigExtension($helper);
-
-        $this->assertInstanceOf('Twig_Extension', $extension);
-        $this->assertSame($helper, $this->readAttribute($extension, 'helper'));
-    }
-
     public function testFilters()
     {
-        $linkify = $this->getMockBuilder('Misd\Linkify\Linkify')->getMock();
-        $helper = $this->getMockBuilder('Misd\LinkifyBundle\Helper\LinkifyHelper')->setConstructorArgs(array($linkify))->getMock();
+        $helper = $this->createMock(LinkifyHelper::class);
 
         $extension = new LinkifyTwigExtension($helper);
 
         $filters = $extension->getFilters();
 
-        $linkifyFilters = array_filter($filters, function (Twig_SimpleFilter $filter) {
+        $linkifyFilters = array_filter($filters, function (TwigFilter $filter) {
             return $filter->getName() === 'linkify';
         });
 
@@ -47,14 +36,13 @@ class LinkifyTwigExtensionTest extends AbstractTestCase
     public function testLinkify()
     {
         $text = 'test';
-        $options = array('key' => 'value');
+        $options = ['key' => 'value'];
 
-        $linkify = $this->getMockBuilder('Misd\Linkify\Linkify')->getMock();
-        $helper = $this->getMockBuilder('Misd\LinkifyBundle\Helper\LinkifyHelper')
-            ->setMethods(array('process'))
-            ->setConstructorArgs(array($linkify))
-            ->getMock();
-        $helper->expects($this->once())->method('process')->with($text, $options);
+        $helper = $this->createMock(LinkifyHelper::class);
+        $helper
+            ->expects($this->once())
+            ->method('process')
+            ->with($text, $options);
 
         $extension = new LinkifyTwigExtension($helper);
 
@@ -63,11 +51,8 @@ class LinkifyTwigExtensionTest extends AbstractTestCase
 
     public function testName()
     {
-        $linkify = $this->getMockBuilder('Misd\Linkify\Linkify')->getMock();
-        $helper = $this->getMockBuilder('Misd\LinkifyBundle\Helper\LinkifyHelper')->setConstructorArgs(array($linkify))->getMock();
+        $extension = new LinkifyTwigExtension($this->createMock(LinkifyHelper::class));
 
-        $extension = new LinkifyTwigExtension($helper);
-
-        $this->assertTrue(is_string($extension->getName()));
+        $this->assertSame('linkify', $extension->getName());
     }
 }

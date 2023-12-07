@@ -11,29 +11,35 @@
 
 namespace Misd\LinkifyBundleBundle\Tests\DependencyInjection;
 
-use Misd\LinkifyBundle\Tests\AbstractTestCase;
+use Misd\Linkify\Linkify;
+use Misd\LinkifyBundle\Helper\LinkifyHelper;
+use Misd\LinkifyBundle\Tests\TestKernel;
+use Misd\LinkifyBundle\Twig\Extension\LinkifyTwigExtension;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class ContainerTest extends AbstractTestCase
+class ContainerTest extends KernelTestCase
 {
-    public function testDefault(array $config = array())
+    public function testDefault(array $config = [])
     {
-        $container = $this->getContainer(array($config));
+        $kernel = new TestKernel('test', true);
+        $kernel->boot();
+        $container = $kernel->getContainer();
 
-        $this->assertTrue($container->has('misd.linkify'));
-        $this->assertInstanceOf('Misd\Linkify\Linkify', $container->get('misd.linkify'));
+        $this->assertTrue($this->container->has('misd.linkify'));
+        $this->assertInstanceOf(Linkify::class, $this->container->get('misd.linkify'));
 
-        $this->assertTrue($container->has('templating.helper.linkify'));
+        $this->assertTrue($this->container->has('templating.helper.linkify'));
         $this->assertInstanceOf(
-            'Misd\LinkifyBundle\Helper\LinkifyHelper',
-            $container->get('templating.helper.linkify')
+            LinkifyHelper::class,
+            $this->container->get('templating.helper.linkify')
         );
-        $this->assertTrue($container->getDefinition('templating.helper.linkify')->hasTag('templating.helper'));
+        $this->assertTrue($this->container->getDefinition('templating.helper.linkify')->hasTag('templating.helper'));
 
-        $this->assertTrue($container->has('twig.extension.linkify'));
+        $this->assertTrue($this->container->has('twig.extension.linkify'));
         $this->assertInstanceOf(
-            'Misd\LinkifyBundle\Twig\Extension\LinkifyTwigExtension',
-            $container->get('twig.extension.linkify')
+            LinkifyTwigExtension::class,
+            $this->container->get('twig.extension.linkify')
         );
-        $this->assertTrue($container->getDefinition('twig.extension.linkify')->hasTag('twig.extension'));
+        $this->assertTrue($this->container->getDefinition('twig.extension.linkify')->hasTag('twig.extension'));
     }
 }
