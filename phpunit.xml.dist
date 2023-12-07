@@ -1,22 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="Tests/bootstrap.php" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.4/phpunit.xsd" cacheDirectory=".phpunit.cache">
-  <php>
-    <server name="KERNEL_CLASS" value="\Misd\LinkifyBundle\Tests\TestKernel"/>
-  </php>
-  <coverage/>
-  <testsuites>
-    <testsuite name="MisdLinkifyBundle Test Suite">
-      <directory suffix="Test.php">./Tests/</directory>
-    </testsuite>
-  </testsuites>
-  <source>
-    <include>
-      <directory>./</directory>
-    </include>
-    <exclude>
-      <directory>./Resources</directory>
-      <directory>./Tests</directory>
-      <directory>./vendor</directory>
-    </exclude>
-  </source>
+
+<phpunit bootstrap="Tests/bootstrap.php">
+    <testsuites>
+        <testsuite name="MisdLinkifyBundle Test Suite">
+            <directory suffix="Test.php">./Tests/</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist>
+            <directory>./</directory>
+            <exclude>
+                <directory>./Resources</directory>
+                <directory>./Tests</directory>
+                <directory>./vendor</directory>
+            </exclude>
+        </whitelist>
+    </filter>
 </phpunit>

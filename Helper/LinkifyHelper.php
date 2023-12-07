@@ -39,11 +39,8 @@ class LinkifyHelper implements HelperInterface
         return 'linkify';
     }
 
-    public function process(?string $text, array $options = []): string
+    public function process(string $text, array $options = []): string
     {
-        if (null === $text) {
-            return '';
-        }
         return $this->linkify->process($text, $options);
     }
 }

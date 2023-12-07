@@ -11,11 +11,11 @@
 
 namespace Misd\LinkifyBundle;
 
-use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
  * MisdLinkifyBundle.
  */
-class MisdLinkifyBundle extends AbstractBundle
+class MisdLinkifyBundle extends Bundle
 {
 }
