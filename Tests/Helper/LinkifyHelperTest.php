@@ -11,21 +11,13 @@
 
 namespace Misd\LinkifyBundleBundle\Tests\Helper;
 
+use Misd\Linkify\Linkify;
 use Misd\LinkifyBundle\Helper\LinkifyHelper;
 use Misd\LinkifyBundle\Tests\AbstractTestCase;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class LinkifyHelperTest extends AbstractTestCase
+class LinkifyHelperTest extends KernelTestCase
 {
-    public function testConstructor()
-    {
-        $linkify = $this->getMockBuilder('Misd\Linkify\Linkify')->getMock();
-
-        $helper = new LinkifyHelper($linkify);
-
-        $this->assertInstanceOf('Symfony\Component\Templating\Helper\HelperInterface', $helper);
-        $this->assertSame($linkify, $this->readAttribute($helper, 'linkify'));
-    }
-
     public function testCharset()
     {
         $linkify = $this->getMockBuilder('Misd\Linkify\Linkify')->getMock();
@@ -49,13 +41,17 @@ class LinkifyHelperTest extends AbstractTestCase
     public function testProcess()
     {
         $text = 'test';
-        $options = array('key' => 'value');
+        $options = ['key' => 'value'];
 
-        $linkify = $this->getMockBuilder('Misd\Linkify\Linkify')->getMock();
-        $linkify->expects($this->once())->method('process')->with($text, $options);
+        $linkify = $this->createMock(Linkify::class);
+        $linkify
+            ->expects($this->once())
+            ->method('process')
+            ->with($text, $options)
+            ->willReturn('linkified');
 
         $helper = new LinkifyHelper($linkify);
 
-        $helper->process($text, $options);
+        $this->assertSame('linkified', $helper->process($text, $options));
     }
 }

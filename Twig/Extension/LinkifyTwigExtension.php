@@ -11,60 +11,39 @@
 
 namespace Misd\LinkifyBundle\Twig\Extension;
 
-use Twig_Extension;
-use Twig_SimpleFilter;
+use Symfony\Bundle\TwigBundle\DependencyInjection\TwigExtension;
 use Misd\LinkifyBundle\Helper\LinkifyHelper;
+use Twig\TwigFilter;
 
-/**
- * LinkifyTwigExtension
- */
-class LinkifyTwigExtension extends Twig_Extension
+class LinkifyTwigExtension extends TwigExtension
 {
-    /**
-     * @var LinkifyHelper
-     */
-    protected $helper;
+    protected LinkifyHelper $helper;
 
-    /**
-     * Constructor.
-     *
-     * @param LinkifyHelper $helper Linkify helper
-     */
     public function __construct(LinkifyHelper $helper)
     {
         $this->helper = $helper;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getFilters()
+    public function getFilters(): array
     {
-        return array(
-            new Twig_SimpleFilter('linkify', array($this, 'linkify'), array(
-                'pre_escape' => 'html',
-                'is_safe' => array('html')
-            )),
-        );
+        return [
+            new TwigFilter(
+                'linkify',
+                [$this, 'linkify'],
+                [
+                    'pre_escape' => 'html',
+                    'is_safe' => ['html']
+                ]
+            ),
+        ];
     }
 
-    /**
-     * Linkify text.
-     *
-     * @param string $text    Text to process.
-     * @param array  $options Options.
-     *
-     * @return string Processed text.
-     */
-    public function linkify($text, array $options = array())
+    public function linkify(?string $textToProcess, array $options = []): string
     {
-        return $this->helper->process($text, $options);
+        return $this->helper->process($textToProcess, $options);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'linkify';
     }
